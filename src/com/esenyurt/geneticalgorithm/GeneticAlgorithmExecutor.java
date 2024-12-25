@@ -4,19 +4,30 @@ import com.esenyurt.database.MSSQLDatabaseConnector;
 import com.esenyurt.entity.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GeneticAlgorithmExecutor {
     public static void main(String[] args) {
-        int populationSize = 200;
+        int populationSize = 50;
         int maxGenerations = 500;
         int maxStagnation = 500;
+        String desc = "Improved Algorithm";
 
-        schedule(populationSize, maxGenerations, maxStagnation);
+
+        schedule(50, maxGenerations, maxStagnation,desc );
+        schedule(100, maxGenerations, maxStagnation,desc );
+        schedule(200, maxGenerations, maxStagnation,desc );
+        schedule(500, maxGenerations, maxStagnation,desc );
+        schedule(1000, maxGenerations, maxStagnation,desc );
+
+
+
     }
 
 
-    public static void schedule(int populationSize, int maxGenerations, int maxStagnation)
+    public static void schedule(int populationSize, int maxGenerations, int maxStagnation, String desc)
     {
         // Initialize parameters
         List<Teacher> teachers = MSSQLDatabaseConnector.fetchPersons();
@@ -33,7 +44,7 @@ public class GeneticAlgorithmExecutor {
         RunEntity run = new RunEntity();
         run.populationSize = populationSize;
         run.generationCount = maxGenerations;
-        long runId = MSSQLDatabaseConnector.insertRun(run);
+        long runId = MSSQLDatabaseConnector.insertRun(run,desc);
         int bestFitness = Integer.MIN_VALUE;
         int stagnationCount = 0;
         int currentGeneration = 1;
@@ -56,6 +67,12 @@ public class GeneticAlgorithmExecutor {
 
             System.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
 
+            try {
+                MSSQLDatabaseConnector.insertSchedulesBatch(population.getFittestChromosome(), (int) runId, currentGeneration, fitness, 1);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
             if (stagnationCount > maxStagnation )
             {
                 System.out.println("Exit due to stagnation ");
@@ -70,7 +87,7 @@ public class GeneticAlgorithmExecutor {
         int finalFitness = FitnessCalculator.calculateChromosomeFitness(finalFittest);
         System.out.printf("Final Best Fitness: %d%n", finalFitness);
         try {
-            MSSQLDatabaseConnector.insertSchedules(finalFittest, (int) runId, currentGeneration, finalFitness, 1);
+            MSSQLDatabaseConnector.insertSchedulesBatch(finalFittest, (int) runId, currentGeneration, finalFitness, 1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
