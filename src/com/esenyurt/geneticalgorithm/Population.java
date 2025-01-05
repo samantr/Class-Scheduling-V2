@@ -62,9 +62,9 @@ public class Population {
             Teacher randomTeacher = teachers.get(random.nextInt(teacherSize));
             Classroom randomClassroom = classrooms.get(random.nextInt(classrooms.size()));
 
-            TimeSlot randomTimeSlot = timeSlots.get(random.nextInt(timeSlots.size()));
+            TimeSlot randomTimeSlot;
 
-            while (!TimeSlotGenerator.isTeacherAndClassroomAvailable(randomTeacher,randomClassroom,randomTimeSlot.day.getValue(),randomTimeSlot.time.getValue(), subject.units,chromosome))
+            //while (!TimeSlotGenerator.isTeacherAndClassroomAvailable(randomTeacher,randomClassroom,randomTimeSlot.day.getValue(),randomTimeSlot.time.getValue(), subject.units,chromosome))
                 randomTimeSlot = timeSlots.get(random.nextInt(timeSlots.size()));//sasa
 
             Schedule gene = new Schedule(subject, randomTeacher, randomClassroom, randomTimeSlot,subject.getUnits());
@@ -144,11 +144,11 @@ public class Population {
             // Create a new random gene
             Teacher randomTeacher = teachers.get(random.nextInt(teachers.size()));
             Classroom randomClassroom = classrooms.get(random.nextInt(classrooms.size()));
-            TimeSlot randomTimeSlot = timeSlots.get(random.nextInt(timeSlots.size()));
+            TimeSlot randomTimeSlot;// = timeSlots.get(random.nextInt(timeSlots.size()));
 
             Subject randomSubject = subjects.get(random.nextInt(subjects.size()));
 
-            while (!TimeSlotGenerator.isTeacherAndClassroomAvailable(randomTeacher,randomClassroom,randomTimeSlot.day.getValue(),randomTimeSlot.time.getValue(),randomSubject.units,chromosome))
+            //while (!TimeSlotGenerator.isTeacherAndClassroomAvailable(randomTeacher,randomClassroom,randomTimeSlot.day.getValue(),randomTimeSlot.time.getValue(),randomSubject.units,chromosome))
                 randomTimeSlot = timeSlots.get(random.nextInt(timeSlots.size()));//sasa
 
             Schedule newGene = new Schedule(randomSubject, randomTeacher, randomClassroom, randomTimeSlot,randomSubject.getUnits());
