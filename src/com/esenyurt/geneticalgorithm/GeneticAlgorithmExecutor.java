@@ -12,13 +12,14 @@ public class GeneticAlgorithmExecutor {
     public static void main(String[] args) {
         int populationSize = 50;
         int maxGenerations = 1000;
-        int maxStagnation = 1000;
+        int maxStagnation = 500;
         String desc = "Standard Algorithm";
 
         schedule(25, maxGenerations, maxStagnation,desc );
         schedule(50, maxGenerations, maxStagnation,desc );
         schedule(100, maxGenerations, maxStagnation,desc );
         schedule(200, maxGenerations, maxStagnation,desc );
+        schedule(400, maxGenerations, maxStagnation,desc );
 
     }
 
@@ -60,7 +61,7 @@ public class GeneticAlgorithmExecutor {
             }else
                 stagnationCount++;
 
-            System.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
+            //System.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
 
             try {
                 MSSQLDatabaseConnector.insertSchedulesBatch(population.getFittestChromosome(), (int) runId, currentGeneration, fitness, 1);

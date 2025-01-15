@@ -329,7 +329,7 @@ public class MSSQLDatabaseConnector {
             // Execute the batch
             int[] result = pstmt.executeBatch();
             connection.commit(); // Commit transaction
-            System.out.println("Batch insert completed. Rows inserted: " + result.length);
+           // System.out.println("Batch insert completed. Rows inserted: " + result.length);
 
         } catch (SQLException e) {
             e.printStackTrace();
