@@ -11,17 +11,16 @@ import java.util.Map;
 public class GeneticAlgorithmExecutor {
     public static void main(String[] args) {
         int populationSize = 50;
-        int maxGenerations = 500;
+        int maxGenerations = 1000;
         int maxStagnation = 500;
         String desc = "Improved Algorithm";
 
 
+        schedule(25, maxGenerations, maxStagnation,desc );
         schedule(50, maxGenerations, maxStagnation,desc );
         schedule(100, maxGenerations, maxStagnation,desc );
         schedule(200, maxGenerations, maxStagnation,desc );
-        schedule(500, maxGenerations, maxStagnation,desc );
-        schedule(1000, maxGenerations, maxStagnation,desc );
-
+        schedule(400, maxGenerations, maxStagnation,desc );
 
 
     }
@@ -65,7 +64,7 @@ public class GeneticAlgorithmExecutor {
             }else
                 stagnationCount++;
 
-            System.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
+            //.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
 
             try {
                 MSSQLDatabaseConnector.insertSchedulesBatch(population.getFittestChromosome(), (int) runId, currentGeneration, fitness, 1);

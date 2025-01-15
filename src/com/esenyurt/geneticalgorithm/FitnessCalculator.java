@@ -93,7 +93,7 @@ public class FitnessCalculator {
 
         // Constraint 8: Minimize the number of working days for each teacher
         for (Set<Integer> days : teacherWorkingDays.values()) {
-            fitness -= PRIORITY_LOW * (days.size() - 3); // Reward fewer working days
+            fitness -= PRIORITY_LOW * (days.size() - 5); // Reward fewer working days
         }
 
         return fitness;
