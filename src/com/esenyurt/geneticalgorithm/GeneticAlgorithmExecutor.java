@@ -2,6 +2,7 @@ package com.esenyurt.geneticalgorithm;
 
 import com.esenyurt.database.MSSQLDatabaseConnector;
 import com.esenyurt.entity.*;
+import com.esenyurt.log.MemoryLogger;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -11,17 +12,20 @@ import java.util.Map;
 public class GeneticAlgorithmExecutor {
     public static void main(String[] args) {
         int populationSize = 50;
-        int maxGenerations = 1000;
+        int maxGenerations = 500;
         int maxStagnation = 500;
-        String desc = "Standard Algorithm";
+        String desc = "Improved Algorithm";
+
+
 
         schedule(25, maxGenerations, maxStagnation,desc );
         schedule(50, maxGenerations, maxStagnation,desc );
         schedule(100, maxGenerations, maxStagnation,desc );
         schedule(200, maxGenerations, maxStagnation,desc );
-        schedule(400, maxGenerations, maxStagnation,desc );
+
 
     }
+
 
     public static void schedule(int populationSize, int maxGenerations, int maxStagnation, String desc)
     {
@@ -31,16 +35,21 @@ public class GeneticAlgorithmExecutor {
         List<Subject> subjects = MSSQLDatabaseConnector.fetchSubject();
         List<TimeSlot> timeSlots = TimeSlot.generateSampleTimeSlots(); // Mock data for now
 
-
-
-        // Create initial population
-        Population population = new Population(populationSize, subjects, teachers, classrooms, timeSlots);
-
         // Insert a new run into the database and retrieve its ID
         RunEntity run = new RunEntity();
         run.populationSize = populationSize;
         run.generationCount = maxGenerations;
         long runId = MSSQLDatabaseConnector.insertRun(run,desc);
+        try {
+            MemoryLogger.log((int)runId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        // Create initial population
+        Population population = new Population(populationSize, subjects, teachers, classrooms, timeSlots);
+
+
+
         int bestFitness = Integer.MIN_VALUE;
         int stagnationCount = 0;
         int currentGeneration = 1;
@@ -61,7 +70,7 @@ public class GeneticAlgorithmExecutor {
             }else
                 stagnationCount++;
 
-            //System.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
+            //.out.printf("Generation %d: Best Fitness = %d%n", generation, fitness);
 
             try {
                 MSSQLDatabaseConnector.insertSchedulesBatch(population.getFittestChromosome(), (int) runId, currentGeneration, fitness, 1);

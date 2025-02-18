@@ -8,7 +8,7 @@ public class FitnessCalculator {
 
     private static final int PRIORITY_HIGH = 15;
     private static final int PRIORITY_MEDIUM = 10;
-    private static final int PRIORITY_LOW = 1;
+    private static final int PRIORITY_LOW = 5;
 
     // Evaluate fitness for a single Schedule (gene)
     public static int calculateGeneFitness(Schedule schedule) {
