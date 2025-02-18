@@ -344,4 +344,40 @@ public class MSSQLDatabaseConnector {
         }
     }
 
+
+    public static void insertMemoryLogBatch(List<MemoryLog> memoryLogs, int run_id) throws SQLException {
+        String sql = "INSERT INTO tbl_mem_log (used_mem_mb, free_mem_mb, max_mem_mb, run_id, created_date) VALUES (?, ?, ?, ?, getdate())";
+        Connection connection = connectToDatabase();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false); // Disable auto-commit for batch processing
+
+            for (MemoryLog memoryLog : memoryLogs) {
+                // Set the values for the placeholders
+                pstmt.setInt(1, memoryLog.getUsedMemMb());
+                pstmt.setInt(2, memoryLog.getFreeMemMb());
+                pstmt.setInt(3, memoryLog.getMaxMemMb());
+                pstmt.setInt(4, run_id);
+
+                pstmt.addBatch(); // Add the insert to the batch
+            }
+
+            // Execute the batch
+            int[] result = pstmt.executeBatch();
+            connection.commit(); // Commit transaction
+            //System.out.println("Batch insert completed. Rows inserted: " + result.length);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback(); // Rollback if an error occurs
+                System.out.println("Transaction rolled back.");
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+        } finally {
+            connection.close();
+        }
+    }
+
 }
