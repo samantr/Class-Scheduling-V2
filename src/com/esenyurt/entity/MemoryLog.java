@@ -1,11 +1,17 @@
 package com.esenyurt.entity;
 
+import javax.xml.crypto.Data;
+import java.sql.Time;
+import java.util.Date;
+
 public class MemoryLog {
 
     public int id;
     public int usedMemMb;
     public int freeMemMb;
     public int maxMemMb;
+
+    public Time time;
 
     public MemoryLog() {
     }
@@ -47,5 +53,13 @@ public class MemoryLog {
 
     public void setMaxMemMb(int maxMemMb) {
         this.maxMemMb = maxMemMb;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
     }
 }
