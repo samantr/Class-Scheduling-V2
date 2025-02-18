@@ -346,7 +346,7 @@ public class MSSQLDatabaseConnector {
 
 
     public static void insertMemoryLogBatch(List<MemoryLog> memoryLogs, int run_id) throws SQLException {
-        String sql = "INSERT INTO tbl_mem_log (used_mem_mb, free_mem_mb, max_mem_mb, run_id, created_date) VALUES (?, ?, ?, ?, getdate())";
+        String sql = "INSERT INTO tbl_mem_log (used_mem_mb, free_mem_mb, max_mem_mb, run_id, created_date) VALUES (?, ?, ?, ?, ?)";
         Connection connection = connectToDatabase();
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -358,6 +358,7 @@ public class MSSQLDatabaseConnector {
                 pstmt.setInt(2, memoryLog.getFreeMemMb());
                 pstmt.setInt(3, memoryLog.getMaxMemMb());
                 pstmt.setInt(4, run_id);
+                pstmt.setTime(5, memoryLog.getTime());
 
                 pstmt.addBatch(); // Add the insert to the batch
             }

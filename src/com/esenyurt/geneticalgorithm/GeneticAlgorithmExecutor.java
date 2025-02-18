@@ -14,7 +14,7 @@ public class GeneticAlgorithmExecutor {
         int populationSize = 50;
         int maxGenerations = 500;
         int maxStagnation = 500;
-        String desc = "Improved Algorithm";
+        String desc = "Standard Algorithm";
 
 
 
