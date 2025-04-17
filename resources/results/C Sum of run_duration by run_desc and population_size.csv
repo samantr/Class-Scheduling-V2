@@ -1,0 +1,9 @@
+﻿run_desc,Sum of run_duration,population_size
+Improved Algorithm,15,15
+Improved Algorithm,20,30
+Improved Algorithm,34,60
+Improved Algorithm,68,120
+Standard Algorithm,21,15
+Standard Algorithm,26,30
+Standard Algorithm,42,60
+Standard Algorithm,73,120
